@@ -36,6 +36,8 @@ namespace APIWeb
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);*/
 
             services.AddScoped<AssignmentsRepository>();
+            services.AddScoped<LevelRepository>();
+
             services.Configure<CookiePolicyOptions>(options =>
             {
 

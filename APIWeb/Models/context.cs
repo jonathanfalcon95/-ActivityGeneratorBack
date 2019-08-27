@@ -13,17 +13,8 @@ namespace APIWeb.Models
         {
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<assignment>().HasKey(sc => new { sc.SoftwareId, sc.HardwareId, sc.UserId });
-        }
-
         public DbSet<user> users { get; set; }
 
-        public DbSet<hardware> hardware { get; set; }
-
-        public DbSet<software> software { get; set; }
-
-        public DbSet<assignment> assignment { get; set; }
+        public DbSet<Level> level { get; set; }
     }
 }
