@@ -35,8 +35,12 @@ namespace APIWeb
                 opt.UseInMemoryDatabase("TodoList"));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);*/
 
-            services.AddScoped<AssignmentsRepository>();
+           
+
             services.AddScoped<TechnologyRepository>();
+
+            services.AddScoped<LevelRepository>();
+
 
             services.Configure<CookiePolicyOptions>(options =>
             {
