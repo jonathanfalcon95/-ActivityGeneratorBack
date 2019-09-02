@@ -5,11 +5,9 @@ using System.Threading.Tasks;
 
 namespace APIWeb.Models
 {
-    public class Activity
+    public class ActivTech
     {
         public long activId { get; set; }
-        public string subjet { get; set; }
-        public string description { get; set; }
-        public long levelId { get; set; }
+        public long techId { get; set; }
     }
 }

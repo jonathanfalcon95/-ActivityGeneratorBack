@@ -38,8 +38,9 @@ namespace APIWeb
            
 
             services.AddScoped<TechnologyRepository>();
-
             services.AddScoped<LevelRepository>();
+            services.AddScoped<ActivityRepository>();
+
 
 
             services.Configure<CookiePolicyOptions>(options =>

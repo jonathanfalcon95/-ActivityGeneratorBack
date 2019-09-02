@@ -12,6 +12,7 @@ namespace APIWeb.Models
           : base(options)
         {
         }
+        public DbSet<Activity>  Activities { get; set; }
 
         public DbSet<user> users { get; set; }
 
