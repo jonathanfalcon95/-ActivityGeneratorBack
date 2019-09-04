@@ -85,27 +85,77 @@ namespace APIWeb.Data
 
         public async Task Insert(Activity activity)
         {
-            
 
+            Console.WriteLine(activity);
 
             using (SqlConnection sql = new SqlConnection(_connectionString))
             {
-                using (SqlCommand cmd = new SqlCommand("CrudActivities", sql))
+                using (SqlCommand cmd = new SqlCommand("CrudActivities1", sql))
                 {
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
                     cmd.Parameters.Add(new SqlParameter("@Query", 1));
-                    cmd.Parameters.Add(new SqlParameter("@subject", activity));
+                    cmd.Parameters.Add(new SqlParameter("@subject", activity.subjet));
                     cmd.Parameters.Add(new SqlParameter("@description", activity.description));
                     cmd.Parameters.Add(new SqlParameter("@levelId", activity.levelId));
 
                     await sql.OpenAsync();
-                    await cmd.ExecuteNonQueryAsync();
-                    return;
+
+                    //==============================================
+
+                    
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        await reader.ReadAsync();
+                        
+                            foreach (long item in activity.technologies)
+                            {
+                                var activTech = new ActivTech()
+                                {
+                                    activId = (long)reader["activId"],
+                                    techId = item
+                                };
+
+                                await InsertActivTech(activTech);
+
+                            }
+                        
+                    }
+                    //==============================================
+
+                    //await cmd.ExecuteNonQueryAsync();
+                     return;
+                    
                 }
             }
+            //to go through arrangement of technologies inside activity
+           
+           // return;
+
+            
         }
 
-        public async Task DeleteById(Assignments assignments)
+
+        public async Task InsertActivTech(ActivTech activTech)
+        {
+            using (SqlConnection sql = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("CrudActivTech", sql))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@Query", 1));
+                    cmd.Parameters.Add(new SqlParameter("@activId", activTech.activId));
+                    cmd.Parameters.Add(new SqlParameter("@techId", activTech.techId));
+        
+
+                    await sql.OpenAsync();
+                    await cmd.ExecuteNonQueryAsync();
+                    //return;
+                }
+            }
+
+        }
+
+            public async Task DeleteById(Assignments assignments)
         {
             using (SqlConnection sql = new SqlConnection(_connectionString))
             {

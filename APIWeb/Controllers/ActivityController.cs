@@ -41,10 +41,19 @@ namespace APIWeb.Controllers
 
         // POST api/values
         [HttpPost]
-        public async Task Post([Bind("activIdd" )] Activity activity)
+        public async Task  Post([FromBody] Activity activity)
         {
-            
+
             await _repository.Insert(activity);
+           
+          
+        }
+
+        [HttpPost ("tech")]
+        public async Task Post2([FromBody] ActivTech activity)
+        {
+
+            await _repository.InsertActivTech(activity);
         }
 
         //// PUT api/values/5

@@ -17,5 +17,7 @@ namespace APIWeb.Models
         public DbSet<user> users { get; set; }
 
         public DbSet<Level> level { get; set; }
+
+        public DbSet<ActivTech>  ActivTech { get; set; }
     }
 }
