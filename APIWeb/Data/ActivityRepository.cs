@@ -12,22 +12,23 @@ namespace APIWeb.Data
     public class ActivityRepository
     {
         private readonly string _connectionString;
+        private readonly LevelRepository _Lrepository;
 
 
-
-        public ActivityRepository(IConfiguration configuration)
+        public ActivityRepository(IConfiguration configuration, LevelRepository repository)
         {
             _connectionString = configuration.GetConnectionString("BaseContext");
+             this._Lrepository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
-        private object MapToActivities(SqlDataReader reader)
+        private object MapToActivities(SqlDataReader reader, Level lev)
         {
             var Model = new
             {
                 activId = (long)reader["activId"],
                 subjet = reader["subject"].ToString(),
                 description = reader["description"].ToString(),
-                levelId = (long)reader["levelId"]
-
+                levelId = (long)reader["levelId"],
+                levelName = lev.levelName.ToString()
 
             };
             return Model;
@@ -45,9 +46,11 @@ namespace APIWeb.Data
 
                     using (var reader = await cmd.ExecuteReaderAsync())
                     {
+
                         while (await reader.ReadAsync())
                         {
-                            response.Add(MapToActivities(reader));
+                            Level lev = await _Lrepository.GetById((long)reader["levelId"]);
+                            response.Add(MapToActivities(reader,lev));
                         }
                     }
 
@@ -74,7 +77,8 @@ namespace APIWeb.Data
                     {
                         while (await reader.ReadAsync())
                         {
-                            response.Add(MapToActivities(reader));
+                            Level lev = await _Lrepository.GetById((long)reader["levelId"]);
+                            response.Add(MapToActivities(reader, lev));
                         }
                     }
 
@@ -82,7 +86,7 @@ namespace APIWeb.Data
                 }
             }
         }
-
+  
         public async Task Insert(Activity activity)
         {
 
